@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Profile</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h1 class="text-center">User Profile</h1>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label text-md-right">Name:</label>
+                        <div class="col-md-6">
+                            <p class="form-control-static" th:text="${userinfo.nickname}"></p>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-md-4 col-form-label text-md-right">Level:</label>
+                        <div class="col-md-6">
+                            <p class="form-control-static" th:text="${userinfo.level}"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <h2 class="text-center">Match Information</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="match, index : ${matches}">
+                            <!-- Hidden input for match ID -->
+                            <input type="hidden" th:id="'matchId_' + ${index.index}" th:name="'matches[' + ${index.index} + '].id'" th:value="${match.matchId}">
+                            <!-- Order number -->
+                            <span class="badge badge-secondary mr-2" th:text="${index.index + 1}"></span>
+                            <!-- Display match ID -->
+                            <span th:text="${match.matchId}"></span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
