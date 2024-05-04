@@ -1,4 +1,4 @@
-const submitbtn = document.getElementById("submit-btn");
+const submitbtn = document.getElementById("submit");
 
 if(submitbtn){
     submitbtn.addEventListener("click", (event) => {

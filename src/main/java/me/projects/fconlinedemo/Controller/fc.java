@@ -2,9 +2,11 @@ package me.projects.fconlinedemo.Controller;
 
 import lombok.RequiredArgsConstructor;
 import me.projects.fconlinedemo.Service.GetUserInfo;
+import me.projects.fconlinedemo.Service.UserMatch;
 import me.projects.fconlinedemo.dto.UserIdResponse;
 import me.projects.fconlinedemo.dto.UserInfo;
 import me.projects.fconlinedemo.dto.Usermatch;
+import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,7 +22,7 @@ import java.util.List;
 @Controller
 public class fc {
     final GetUserInfo getUserInfo;
-
+    final UserMatch userMatch;
     @GetMapping("/api/fc/info")
     public String info(){
         return "info";
@@ -30,7 +32,9 @@ public class fc {
     public String test(@RequestParam String nickname, Model model) throws UnsupportedEncodingException {
         UserIdResponse userIdResponse =  getUserInfo.getUserId(nickname);
         UserInfo userInfo = getUserInfo.getUserInfo(userIdResponse.getOuid());
-        List<Usermatch> usermatches = getUserInfo.getMatches(userIdResponse.getOuid());
+//        List<Usermatch> usermatches = getUserInfo.getMatches(userIdResponse.getOuid());
+        Usermatch[] usermatches = userMatch.getMatches(userInfo.getOuid());
+        userMatch.MatchDetails(usermatches[0].getMatchId());
         model.addAttribute("userinfo", userInfo);
         model.addAttribute("matches", usermatches);
         return "user";
