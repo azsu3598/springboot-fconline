@@ -21,10 +21,13 @@ public class UserMatch {
     @Autowired
     ObjectMapper objectMapper;
 
+    /**
+     * 유저 id값으로 유저 매치 정보 가져오기(최근 5경기)
+     */
     public Usermatch[] getMatches(String ouid) {
         final int matchtype = 50;
         final int offset = 0;
-        final int limit = 10;
+        final int limit = 5;
         final String url = "https://open.api.nexon.com/fconline/v1/user/match?ouid=" + ouid
                 + "&matchtype=" + matchtype + "&offset=" + offset + "&limit=" + limit;
         RestTemplate rt = new RestTemplate();
@@ -59,8 +62,10 @@ public class UserMatch {
             throw new RuntimeException(e);
         }
     }
-
-    public void MatchDetails(String ouid) {
+    /**
+     * 각 경기별 정보 가져오기
+     */
+    public UsermatchInfo MatchDetails(String ouid) {
         final String url = "https://open.api.nexon.com/fconline/v1/match-detail?matchid=" + ouid;
         RestTemplate rt = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
@@ -80,11 +85,13 @@ public class UserMatch {
         try {
 //            jsonResponse = new JSONObject(responseEntity.getBody());
             jsonResponse = objectMapper.readValue(responseEntity.getBody(), UsermatchInfo.class);
-            System.out.println(jsonResponse);
+            System.out.println("jsonResponse = " + jsonResponse);
+            return jsonResponse;
         } catch (JsonMappingException e) {
             throw new RuntimeException(e);
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
         }
+
     }
 }

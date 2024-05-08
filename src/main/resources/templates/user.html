@@ -14,15 +14,9 @@
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-4 col-form-label text-md-right">Name:</label>
-                        <div class="col-md-4">
-                            <p class="form-control-static" th:text="${userinfo.nickname}"></p>
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-md-4 col-form-label text-md-right">Level:</label>
+                        <label class="col-md-3 col-form-label text-md-right">Name:</label>
                         <div class="col-md-6">
-                            <p class="form-control-static" th:text="${userinfo.level}"></p>
+                            <p class="form-control-static" th:text="${userinfo.nickname} + ' (Level: ' + ${userinfo.level} + ')'"></p>
                         </div>
                     </div>
                 </div>
@@ -30,6 +24,7 @@
                     <h2 class="text-center">Match Information</h2>
                     <ul class="list-group">
                         <li class="list-group-item" th:each="match, index : ${matches}">
+                            <span>Match Date: <span th:text="${matchinfo.matchDate}"></span></span><br>
                             <!-- Hidden input for match ID -->
                             <input type="hidden" th:id="'matchId_' + ${index.index}" th:name="'matches[' + ${index.index} + '].id'" th:value="${match.matchId}">
                             <!-- Order number -->

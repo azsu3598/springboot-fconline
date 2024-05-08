@@ -23,6 +23,11 @@ import java.util.List;
 public class GetUserInfo {
     @Autowired
     ObjectMapper objectMapper;
+
+    /**
+     *
+     * 유저 id값 추출하기
+     */
     public UserIdResponse getUserId(String  nickname){
         final String url = "https://open.api.nexon.com/fconline/v1/id?nickname="+nickname;
 
@@ -45,6 +50,10 @@ public class GetUserInfo {
             throw new RuntimeException(e);
         }
     }
+
+    /**
+     *id값을 사용하여 유저 정보 가져오기
+     */
     public UserInfo getUserInfo(String ouid){
         final String url = "https://open.api.nexon.com/fconline/v1/user/basic?ouid="+ouid;
         RestTemplate rt = new RestTemplate();

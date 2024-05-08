@@ -6,6 +6,7 @@ import me.projects.fconlinedemo.Service.UserMatch;
 import me.projects.fconlinedemo.dto.UserIdResponse;
 import me.projects.fconlinedemo.dto.UserInfo;
 import me.projects.fconlinedemo.dto.Usermatch;
+import me.projects.fconlinedemo.dto.UsermatchInfo;
 import org.apache.catalina.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,9 +35,10 @@ public class fc {
         UserInfo userInfo = getUserInfo.getUserInfo(userIdResponse.getOuid());
 //        List<Usermatch> usermatches = getUserInfo.getMatches(userIdResponse.getOuid());
         Usermatch[] usermatches = userMatch.getMatches(userInfo.getOuid());
-        userMatch.MatchDetails(usermatches[0].getMatchId());
+        UsermatchInfo usermatchInfo = userMatch.MatchDetails(usermatches[0].getMatchId());
         model.addAttribute("userinfo", userInfo);
         model.addAttribute("matches", usermatches);
+        model.addAttribute("matchinfo", usermatchInfo);
         return "user";
     }
 }
