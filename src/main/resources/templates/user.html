@@ -5,32 +5,43 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
-<div class="container mt-5">
+<div class="container-fluid mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-10">
             <div class="card">
+                <div class="text-md-right">
+                    <form th:action="@{/test}" method="get" class="form-inline justify-content-end">
+                        <div class="form-group">
+                            <label for="nickname" class="mr-2">Search:</label>
+                            <input type="text" class="form-control mr-2" id="nickname" name="nickname" placeholder="구단주명">
+                            <button type="submit" class="btn btn-primary">검색하기</button>
+                        </div>
+                    </form>
+                </div>
                 <div class="card-header">
                     <h1 class="text-center">User Profile</h1>
                 </div>
                 <div class="card-body">
                     <div class="form-group row">
-                        <label class="col-md-3 col-form-label text-md-right">Name:</label>
-                        <div class="col-md-6">
+                        <label class="col-md-3 col-form-label text-md-right text-center">Name:</label>
+                        <div class="col-md-6 d-flex justify-content-center">
                             <p class="form-control-static" th:text="${userinfo.nickname} + ' (Level: ' + ${userinfo.level} + ')'"></p>
                         </div>
                     </div>
                 </div>
+
+
+
                 <div class="card-footer">
                     <h2 class="text-center">Match Information</h2>
                     <ul class="list-group">
-                        <li class="list-group-item" th:each="match, index : ${matches}">
-                            <span>Match Date: <span th:text="${matchinfo.matchDate}"></span></span><br>
-                            <!-- Hidden input for match ID -->
+                        <li class="list-group-item" th:each="match, index : ${matchinfo}">
+                            <span th:text="${#temporals.format(match.matchDate, 'yyyy.MM.dd HH:mm')}"></span><br>
                             <input type="hidden" th:id="'matchId_' + ${index.index}" th:name="'matches[' + ${index.index} + '].id'" th:value="${match.matchId}">
-                            <!-- Order number -->
-                            <span class="badge badge-secondary mr-2" th:text="${index.index + 1}"></span>
-                            <!-- Display match ID -->
-                            <span th:text="${match.matchId}"></span>
+                            <div class="row text-center">
+                                <span class="badge badge-secondary mr-2" th:text="${index.index + 1}"></span>
+                                <span class="col mx-2" th:text="${match.matchInfo[0].nickname + ' ' + match.matchInfo[0].shoot.goalTotal + ' : ' + match.matchInfo[1].nickname + ' ' + match.matchInfo[1].shoot.goalTotal}"></span>
+                            </div>
                         </li>
                     </ul>
                 </div>
@@ -38,5 +49,6 @@
         </div>
     </div>
 </div>
+
 </body>
 </html>

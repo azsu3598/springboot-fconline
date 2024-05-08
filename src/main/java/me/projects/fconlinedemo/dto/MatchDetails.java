@@ -11,4 +11,5 @@ public class MatchDetails {
     private String ouid;
     private String nickname;
     private MatchDetail matchDetail;
+    private Shoot shoot;
 }

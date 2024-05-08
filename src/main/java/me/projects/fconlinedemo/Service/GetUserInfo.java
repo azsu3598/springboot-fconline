@@ -1,12 +1,9 @@
 package me.projects.fconlinedemo.Service;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import me.projects.fconlinedemo.dto.UserIdResponse;
 import me.projects.fconlinedemo.dto.UserInfo;
-import me.projects.fconlinedemo.dto.Usermatch;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,11 +11,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-
 @Service
 public class GetUserInfo {
     @Autowired

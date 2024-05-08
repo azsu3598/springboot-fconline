@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -13,6 +15,7 @@ import java.util.List;
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UsermatchInfo {
-    private String matchDate;
+    private String matchId;
+    private LocalDateTime matchDate;
     private List<MatchDetails> matchInfo;
 }

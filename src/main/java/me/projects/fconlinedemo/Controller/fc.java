@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.util.Arrays;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -33,9 +34,8 @@ public class fc {
     public String test(@RequestParam String nickname, Model model) throws UnsupportedEncodingException {
         UserIdResponse userIdResponse =  getUserInfo.getUserId(nickname);
         UserInfo userInfo = getUserInfo.getUserInfo(userIdResponse.getOuid());
-//        List<Usermatch> usermatches = getUserInfo.getMatches(userIdResponse.getOuid());
         Usermatch[] usermatches = userMatch.getMatches(userInfo.getOuid());
-        UsermatchInfo usermatchInfo = userMatch.MatchDetails(usermatches[0].getMatchId());
+        List<UsermatchInfo> usermatchInfo = userMatch.MatchDetails(usermatches);
         model.addAttribute("userinfo", userInfo);
         model.addAttribute("matches", usermatches);
         model.addAttribute("matchinfo", usermatchInfo);
