@@ -20,27 +20,21 @@ import java.util.List;
 public class UserMatch {
     @Autowired
     ObjectMapper objectMapper;
-
+    @Autowired
+    HttpRequest httpRequest;
     /**
      * 유저 id값으로 유저 매치 정보 가져오기(최근 5경기)
      */
     public Usermatch[] getMatches(String ouid) {
+        // url에 추가할 유저 id값
         final int matchtype = 50;
+        // 경기 종류 50 : 공식 경기
         final int offset = 0;
         final int limit = 10;
         final String url = "https://open.api.nexon.com/fconline/v1/user/match?ouid=" + ouid
                 + "&matchtype=" + matchtype + "&offset=" + offset + "&limit=" + limit;
-        RestTemplate rt = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("accept", "application/json");
-        headers.set("x-nxopen-api-key", "test_afe1517c544acc2bdbac122b22911e54695ca7a60aee10b605f19b274cc10f515d6d4b26f831f2fb4ba3f9511cc72095");
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = rt.exchange(
-                url,
-                HttpMethod.GET,
-                requestEntity,
-                String.class
-        );
+        ResponseEntity<String> responseEntity = httpRequest.httpRequest(url);
+
         Usermatch[] usermatches;
         try {
             usermatches = objectMapper.readValue(responseEntity.getBody(), Usermatch[].class);
@@ -54,25 +48,21 @@ public class UserMatch {
      */
     public List<UsermatchInfo> MatchDetails(Usermatch[] usermatches) {
         List<UsermatchInfo> matchDetailsList = new ArrayList<>();
-
+        // 여러 매치들을 뽑아오기에 List로 지정
         for (Usermatch usermatch : usermatches) {
+            // 매치 하나씩 뽑기
             final String matchId = usermatch.getMatchId();
+            // 매치의 id값 추출
             final String url = "https://open.api.nexon.com/fconline/v1/match-detail?matchid=" + matchId;
-            RestTemplate rt = new RestTemplate();
-            HttpHeaders headers = new HttpHeaders();
-            headers.set("accept", "application/json");
-            headers.set("x-nxopen-api-key", "test_afe1517c544acc2bdbac122b22911e54695ca7a60aee10b605f19b274cc10f515d6d4b26f831f2fb4ba3f9511cc72095");
-            HttpEntity<String> http = new HttpEntity<>(headers);
-            ResponseEntity<String> responseEntity = rt.exchange(
-                    url,
-                    HttpMethod.GET,
-                    http,
-                    String.class
-            );
+            // url 지정
+            ResponseEntity<String> responseEntity = httpRequest.httpRequest(url);
+
 
             try {
                 UsermatchInfo matchInfo = objectMapper.readValue(responseEntity.getBody(), UsermatchInfo.class);
+                // UsermatchInfo 클래스로 매핑하여 역직렬화
                 matchDetailsList.add(matchInfo);
+                // list에 추가
             } catch (JsonProcessingException e) {
                 throw new RuntimeException(e);
             }

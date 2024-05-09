@@ -32,7 +32,9 @@ public class fc {
 
     @GetMapping("/test")
     public String test(@RequestParam String nickname, Model model) throws UnsupportedEncodingException {
+        // RequestParam을 사용하여 qeury에 있는 변수 nickname값 저장
         UserIdResponse userIdResponse =  getUserInfo.getUserId(nickname);
+        // nickname을 이요하여 getUserId를 통해서 유저 id값 받아오기
         UserInfo userInfo = getUserInfo.getUserInfo(userIdResponse.getOuid());
         Usermatch[] usermatches = userMatch.getMatches(userInfo.getOuid());
         List<UsermatchInfo> usermatchInfo = userMatch.MatchDetails(usermatches);

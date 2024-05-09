@@ -15,31 +15,25 @@ import org.springframework.web.client.RestTemplate;
 public class GetUserInfo {
     @Autowired
     ObjectMapper objectMapper;
-
+    @Autowired
+    HttpRequest httpRequest;
     /**
      *
-     * 유저 id값 추출하기
+     * 유저 닉네임 받아와서 해당 유저의 id값 추출하기
      */
     public UserIdResponse getUserId(String  nickname){
         final String url = "https://open.api.nexon.com/fconline/v1/id?nickname="+nickname;
-
-        RestTemplate rt = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("accept","application/json");
-        headers.set("x-nxopen-api-key", "test_afe1517c544acc2bdbac122b22911e54695ca7a60aee10b605f19b274cc10f515d6d4b26f831f2fb4ba3f9511cc72095");
-
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = rt.exchange(
-                url,
-                HttpMethod.GET,
-                requestEntity,
-                String.class
-        );
+        // 요청해야 하는 주소 + 변수로 받아온 닉네임 추가
+        ResponseEntity<String> responseEntity = httpRequest.httpRequest(url);
         try {
             UserIdResponse userIdResponse = objectMapper.readValue(responseEntity.getBody(), UserIdResponse.class);
+            // JSON형식의 응답을 objectMapper의 readValue를 이용하여 역직렬화
+            // UserIdResponse 클래스로 매핑
             return userIdResponse;
+            // 값을 반환
         } catch (JsonProcessingException e) {
             throw new RuntimeException(e);
+            // 오류 발생시 처리
         }
     }
 
@@ -48,19 +42,8 @@ public class GetUserInfo {
      */
     public UserInfo getUserInfo(String ouid){
         final String url = "https://open.api.nexon.com/fconline/v1/user/basic?ouid="+ouid;
-        RestTemplate rt = new RestTemplate();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("accept","application/json");
-        headers.set("x-nxopen-api-key", "test_afe1517c544acc2bdbac122b22911e54695ca7a60aee10b605f19b274cc10f515d6d4b26f831f2fb4ba3f9511cc72095");
-        HttpEntity<String> requestEntity = new HttpEntity<>(headers);
-        ResponseEntity<String> responseEntity = rt.exchange(
-                url,
-                HttpMethod.GET,
-                requestEntity,
-                String.class
-        );
-        System.out.println("responseEntity.getBody() = " + responseEntity.getBody());
-        UserInfo userInfo;
+        ResponseEntity<String> responseEntity = httpRequest.httpRequest(url);
+        UserInfo userInfo = null;
         try {
             userInfo = objectMapper.readValue(responseEntity.getBody(), UserInfo.class);
             return userInfo;
